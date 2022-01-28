@@ -2,13 +2,7 @@
 	<div class="row">
 		<div class="col-8">
 		    <div class="card border-0 card-algo-left">
-		        <div id='plot-one-raw'></div>
-		    </div>
-		    <div class="card border-0 card-algo-left">
-		        <div id='plot-one-smooth'></div>
-		    </div>
-		    <div class="card border-0 card-algo-left">
-		        <div id='plot-one-hist'></div>
+		        <div id='plot-feature'></div>
 		    </div>
 		</div>
 		<div class="col-4">
@@ -16,35 +10,35 @@
 				<div class="col" style="padding:0">
 
 					<div class="pb-1">
-						<div class="dropdown" id="dropdown-account">
-							<button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Saving Account
-							</button>
-							<div class="dropdown-menu btn-block" aria-labelledby="acc-type">
-							<a class="dropdown-item" data-value="saving" href="#">Saving Account</a>
-							<a class="dropdown-item" data-value="current" href="#">Current Account</a>
-							<a class="dropdown-item" data-value="credit" href="#">Credit Card</a>
-							</div>
+						<div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
+							<label class="btn btn-primary active" onChange="cb_algo()">
+								<input type="radio" name="options-acc-type" value="saving" autocomplete="off" checked>Saving Account
+							</label>
+							<label class="btn btn-primary"  onChange="cb_algo()">
+								<input type="radio" name="options-acc-type" value="current" autocomplete="off">Current Account
+							</label>
+							<label class="btn btn-primary"  onChange="cb_algo()">
+								<input type="radio" name="options-acc-type" value="credit" autocomplete="off">Credit Card
+							</label>
 						</div>
-
 					</div>
 
 					<div class="pb-1">
 						<div class="dropdown" id="dropdown-customer">
 							<button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Customer {{0}}
+								Customer {{ cid_selected }}
 							</button>
 							<div class="dropdown-menu btn-block" aria-labelledby="cust-id">
-								{% for i in range(0, 100) %}
+								{% for cid in ['15266186', '20858441'] + cids %}
 							    	<a class="dropdown-item" data-value={{i}} href="#">
-							    		{{i}}
+							    		{{cid}}
 							    	</a>
 								{% endfor %}
 							</div>
 						</div>
 
 					</div>
-
+<!-- 
 					<div>
 						<div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
 							<label class="btn btn-primary active">
@@ -54,39 +48,26 @@
 								<input type="radio" name="options-feat" value="consistency" autocomplete="off"> Consistency
 							</label>
 						</div>
-					</div>
+					</div> -->
 
 				</div>
 			</div>
 
-			<div class="card border-0 card-algo-preds">
+			<div class="card border-0 card-algo-preds text-center justify-content-center">
+				<div>Voting</div>
 		        <div id='plot-svm-preds'></div>
 		    </div>
 
 		    <div class="card border-0 text-center card-algo-res justify-content-center">
 	        	<div>
-		        	Confidence
+		        	Probability of becoming affluent<br/>after 6 months
 		        </div>
 		        
 				<div class="container d-flex h-100 justify-content-center">
 					<div class="row align-self-center">
 						<div class="col">
-							<span class="text-svm-pred">96</span>
+							<span class="text-svm-pred" id="text-pred">{{prediction}}</span>
 							<span id="text-conf-percent">%</span>
-						</div>
-					</div>
-				</div>
-		    </div>
-
-		    <div class="card border-0 text-center card-algo-res justify-content-center">
-	        	<div>
-		        	Predicted segment (after 6 months)	
-		        </div>
-		        
-				<div class="container d-flex h-100 justify-content-center">
-					<div class="row align-self-center">
-						<div class="col">
-							<span class="text-svm-pred">Affluent</span>
 						</div>
 					</div>
 				</div>
@@ -94,3 +75,62 @@
 		</div>
 	</div>
 </div>
+
+<script type='text/javascript'>
+
+	$( document ).ready(function() {
+	    $('#dropdown-customer').each(function (key, dropdown) {
+	        var $dropdown = $(dropdown);
+	        $dropdown.find('.dropdown-menu a').on('click', function () {
+	            $dropdown.find('button').text("Customer " + $(this).text()).append(' <span class="caret"></span>');
+	            cb_algo();
+	        });
+	    });
+	});
+
+	$( document ).ready(function() {
+	    $
+	});
+
+
+	$(function() {
+    $('input:checkbox').change(function() {
+      $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+    })
+  })
+	
+	var graphVotes = {{graphVotes | safe}}
+	var graphsFeature = {{graphsFeature | safe}}
+	Plotly.plot('plot-feature', graphsFeature,{});
+	Plotly.plot('plot-svm-preds',graphVotes,{});
+
+
+	function updateCID(res) {
+
+		if (!res.feature) {
+			Plotly.purge('plot-feature');
+		}
+		else {
+			Plotly.newPlot('plot-feature', JSON.parse(res.feature));	
+		}
+
+		Plotly.newPlot('plot-svm-preds', JSON.parse(res.voting));
+		document.getElementById("text-pred").textContent=String(res.prob);
+	
+	}
+
+	function cb_algo() {
+
+		var cid = $('#dropdown-customer').find('button').text().replace( /\D+/g, '');
+		var accType = $("input[name='options-acc-type']:checked").val();
+
+		$.getJSON({
+			url: '/callback_algo', 
+			data: { 'cid': cid, 'accType': accType },
+			success: updateCID
+		})
+	}
+	
+</script>
+
+

@@ -5,7 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">        
         <link rel="stylesheet" href="./static/styles.css">
-        <title>ummmmm</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+        <title>um-Biased?</title>
     </head>
 
     <body>
@@ -31,50 +35,7 @@
 			</div>
 		</div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-		<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     </body>
-
-	<script type='text/javascript'>
-
-		// show selected value at dropdown menu
-		$( document ).ready(function() {
-		    $('#dropdown-account').each(function (key, dropdown) {
-		        var $dropdown = $(dropdown);
-		        $dropdown.find('.dropdown-menu a').on('click', function () {
-		            $dropdown.find('button').text($(this).text()).append(' <span class="caret"></span>');
-		        });
-		    });
-		});
-
-		$( document ).ready(function() {
-		    $('#dropdown-customer').each(function (key, dropdown) {
-		        var $dropdown = $(dropdown);
-		        $dropdown.find('.dropdown-menu a').on('click', function () {
-		            $dropdown.find('button').text("Customer " + $(this).text()).append(' <span class="caret"></span>');
-		        });
-		    });
-		});
-
-		var graphs = {{graphJSON | safe}};
-		var graphs2 = {{graphJSON2 | safe}};
-		var graphs3 = {{graphJSON3 | safe}};
-
-		Plotly.plot('plot-one-raw',graphs,{});
-		Plotly.plot('plot-one-smooth',graphs,{});
-		Plotly.plot('plot-one-hist',graphs,{});
-		Plotly.plot('plot-svm-preds',graphs2,{});
-		Plotly.plot('plot-group-saving-amount', graphs3, {})
-		Plotly.plot('plot-group-current-amount', graphs3, {})
-		Plotly.plot('plot-group-credit-amount', graphs3, {})
-		Plotly.plot('plot-group-saving-diff', graphs3, {})
-		Plotly.plot('plot-group-current-diff', graphs3, {})
-		Plotly.plot('plot-group-credit-diff', graphs3, {})
-
-		
-	</script>
 
 </html>
 

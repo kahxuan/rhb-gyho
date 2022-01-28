@@ -2,7 +2,21 @@
 	<div class="row">
 		<div class="col">
 
-			<div class="row mt-2 mb-2">
+			<div class="row mt-2"> 
+				<div class="col">
+				    <div class="card border-0 text-center">
+			        	<div>
+				        	Segment after 6 months &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				        	<b><span style="letter-spacing: -5px;color: #0664ac">----------------------------------</span></b> &nbsp;
+				        	Non-Affluent &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				        	<b><span style="letter-spacing: -5px;color: #e73d40">----------------------------------</span></b> &nbsp;
+				        	Affluent
+				        </div>
+				    </div>
+				</div>
+			</div>
+
+			<div class="row mt-2 mb-3">
 				<div class="col-11">
 					<div class="card border-0 card-pattern">
 						<div class="row">
@@ -24,7 +38,7 @@
 				</div>
 			</div>
 
-			<div class="row mt-2 mb-2">
+			<div class="row mt-2 mb-3">
 				<div class="col-11">
 					<div class="card border-0 card-pattern">
 						<div class="row">
@@ -46,7 +60,7 @@
 				</div>
 			</div>
 
-			<div class="row mt-2 mb-2">
+			<div class="row mt-2 mb-3">
 				<div class="col-11">
 					<div class="card border-0 card-pattern">
 						<div class="row">
@@ -76,10 +90,10 @@
 			<div>
 				<div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
 					<label class="btn btn-primary active">
-						<input type="radio" name="options-cd" value="debit" autocomplete="off" checked>Debit
+						<input type="radio" name="options-cd" value="debit" autocomplete="off" checked onchange="cb_pattern(this.value)">Debit
 					</label>
 					<label class="btn btn-primary">
-						<input type="radio" name="options-cd" value="credit" autocomplete="off">Credit
+						<input type="radio" name="options-cd" value="credit" autocomplete="off" onchange="cb_pattern(this.value)">Credit
 					</label>
 				</div>
 			</div>
@@ -87,3 +101,30 @@
 	</div>
 
 </div>
+
+<script type="text/javascript">
+
+	var graphsPattern = {{ graphsPattern | safe }};
+
+	plotPattern(graphsPattern)
+
+	function plotPattern(res) {
+
+		Plotly.newPlot('plot-group-saving-amount', JSON.parse(res.saving.amount));
+		Plotly.newPlot('plot-group-current-amount', JSON.parse(res.current.amount));
+		Plotly.newPlot('plot-group-credit-amount', JSON.parse(res.credit.amount));
+		Plotly.newPlot('plot-group-saving-diff', JSON.parse(res.saving.diff));
+		Plotly.newPlot('plot-group-current-diff', JSON.parse(res.current.diff));
+		Plotly.newPlot('plot-group-credit-diff', JSON.parse(res.credit.diff));
+	
+	}
+
+	function cb_pattern(cd) {
+		$.getJSON({
+			url: '/callback_pattern', 
+			data: { 'cd': cd },
+			success: plotPattern
+		})
+	}
+
+</script>
