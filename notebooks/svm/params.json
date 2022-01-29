@@ -1,0 +1,34 @@
+{
+	"svm": {
+		"saving": {
+			"diff": {
+				"rolling_window": 14,
+				"nbins": 47
+			},
+			"transact": {
+				"rolling_window": 14,
+				"nbins": 30
+			}
+		},
+		"current": {
+			"diff": {
+				"rolling_window": 14,
+				"nbins": 55
+			},
+			"transact": {
+				"rolling_window": 14,
+				"nbins": 39
+			}
+		},
+		"credit": {
+			"diff": {
+				"rolling_window": 14,
+				"nbins": 29
+			},
+			"transact": {
+				"rolling_window": 14,
+				"nbins": 45
+			}
+		}
+	}
+}
